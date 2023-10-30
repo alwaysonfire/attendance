@@ -1,17 +1,55 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Home from './components/Home';
+import GuildBossAttendanceForm from './components/GuildBoss';
+import GuildExpeditionForm from './components/GuildExpedition';
+import GuildPointContestForm from './components/GuildPointContest';
+import AdminLogin from './components/AdminLogin';
+import PendingAttendance from './components/PendingAttendance';
+import { AuthProvider } from './context/AuthContext';
+import AdminOptionsPage from './components/AdminOptions';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+    children: [
+      {
+        path: 'guildboss',
+        element: <GuildBossAttendanceForm />,
+      },
+      {
+        path: 'guildexpedition',
+        element: <GuildExpeditionForm />,
+      },
+      {
+        path: 'guildpointcontest',
+        element: <GuildPointContestForm />,
+      },
+      {
+        path: 'admin',
+        element: <AdminLogin />,
+      },
+      {
+        path: 'pending',
+        element: <PendingAttendance />,
+      },
+      {
+        path: 'admin-options',
+        element: <AdminOptionsPage />,
+      },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      {' '}
+      {/* Wrap your app with AuthProvider */}
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

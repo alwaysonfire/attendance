@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { useRoutes } from 'react-router-dom';
+import Home from './components/Home';
+import GuildBossAttendanceForm from './components/GuildBoss';
+import GuildExpeditionForm from './components/GuildExpedition';
+import GuildPointContestForm from './components/GuildPointContest';
+import AdminLogin from './components/AdminLogin';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  // Example of using a state variable for authentication status
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Define your routes with conditional rendering
+  const element = useRoutes([
+    {
+      path: '/',
+      element: <Home />,
+    },
+    {
+      path: 'guildboss',
+      element: isAuthenticated ? <GuildBossAttendanceForm /> : <AdminLogin />,
+    },
+    {
+      path: 'guildexpedition',
+      element: isAuthenticated ? <GuildExpeditionForm /> : <AdminLogin />,
+    },
+    {
+      path: 'guildpointcontest',
+      element: isAuthenticated ? <GuildPointContestForm /> : <AdminLogin />,
+    },
+    {
+      path: 'admin',
+      element: <AdminLogin setIsAuthenticated={setIsAuthenticated} />,
+    },
+  ]);
+
+  return element;
 }
 
 export default App;
