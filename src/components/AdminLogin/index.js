@@ -12,7 +12,7 @@ function AdminLogin() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:3001/login', {
+      const response = await fetch('http://13.228.193.236:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

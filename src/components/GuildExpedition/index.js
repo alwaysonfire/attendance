@@ -18,7 +18,7 @@ function GuildExpeditionForm() {
 
   useEffect(() => {
     // Fetch the data from the server
-    fetch('http://localhost:3001/data') // Replace with your API endpoint
+    fetch('http://13.228.193.236:3001/data') // Replace with your API endpoint
       .then(response => response.json())
       .then(data => {
         setAttendanceData(data);
@@ -70,7 +70,7 @@ function GuildExpeditionForm() {
     };
 
     // Send a POST request to the server
-    fetch('http://localhost:3001/submit', {
+    fetch('http://13.228.193.236:3001/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ function PendingAttendance() {
 
   React.useEffect(() => {
     // Fetch data from the server
-    fetch('http://localhost:3001/pending') // Replace with your API endpoint
+    fetch('http://13.228.193.236:3001/pending') // Replace with your API endpoint
       .then(response => response.json())
       .then(data => {
         setPendingData(data);
@@ -33,7 +33,7 @@ function PendingAttendance() {
   const handleAction = (id, isApprove) => {
     const endpoint = isApprove ? 'approve' : 'decline';
 
-    fetch(`http://localhost:3001/${endpoint}/${id}`, {
+    fetch(`http://13.228.193.236:3001/${endpoint}/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

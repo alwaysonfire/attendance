@@ -13,8 +13,8 @@ function AdminOptionsPage() {
   const [isClearConfirmationOpen, setIsClearConfirmationOpen] = useState(false);
 
   const handleExportData = () => {
-    // Replace 'http://localhost:3001/export' with the actual export API endpoint
-    const exportUrl = 'http://localhost:3001/export';
+    // Replace 'http://13.228.193.236:3001/export' with the actual export API endpoint
+    const exportUrl = 'http://13.228.193.236:3001/export';
 
     fetch(exportUrl)
       .then(response => response.json())
@@ -48,8 +48,8 @@ function AdminOptionsPage() {
   // Function to clear data
   // Function to clear data
   const handleClearData = () => {
-    // Replace 'http://localhost:3001/clear' with the actual clear data API endpoint
-    fetch('http://localhost:3001/clear', {
+    // Replace 'http://13.228.193.236:3001/clear' with the actual clear data API endpoint
+    fetch('http://13.228.193.236:3001/clear', {
       method: 'POST',
     })
       .then(response => {
