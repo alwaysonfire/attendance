@@ -17,7 +17,7 @@ function Home() {
             <span role="img" aria-label="hotdog">
               🌭
             </span>
-            Welcome to the Guild App
+            Welcome to Longadog
             <span role="img" aria-label="hotdog">
               🌭
             </span>
