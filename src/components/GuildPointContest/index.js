@@ -15,6 +15,10 @@ function GuildPointContestForm() {
   const [result, setResult] = useState('');
   console.log('attendanceData', attendanceData);
 
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const date = currentDateTime.toLocaleDateString();
+  const timeOptions = { hour: '2-digit', minute: '2-digit' };
+  const time = currentDateTime.toLocaleTimeString([], timeOptions);
   useEffect(() => {
     // Fetch the data from the server
     fetch('http://13.228.193.236:3001/data') // Replace with your API endpoint
@@ -42,6 +46,7 @@ function GuildPointContestForm() {
       reader.onload = e => {
         const base64String = e.target.result;
         setImageBase64(base64String);
+        setCurrentDateTime(new Date());
       };
 
       reader.readAsDataURL(file);
@@ -88,18 +93,44 @@ function GuildPointContestForm() {
         console.error('Error:', error);
       });
   };
+  
+  const divStyle = {
+    width: '95%',
+    border: '1px solid white',
+    height: '136px',
+    height: '136px',
+    backgroundImage: `url(${imageBase64})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
+  
+  const openFileInput = (event) => {
+    event.preventDefault();
+    fileInputRef.current.click();
+  };
 
+  const fileInputRef = React.createRef();
   return (
-    <form onSubmit={handleSubmit}>
-      <Typography mt={10} mb={10} variant="h3">
-        Guild Point Contest
-      </Typography>
+    <div className='attendance-container'>
+    <span className='attendance-title'>Guild Point Contest</span>
+    <form onSubmit={handleSubmit}  className='form-container'>
       <FormControl fullWidth>
-        <InputLabel id="name-label">Select Name (up to 1)</InputLabel>
+        {!selectedNames.value && (
+        <InputLabel id="name-label">Select Name</InputLabel>
+        )}
         <Select
           labelId="name-label"
           id="name"
           multiple
+          // style={selectStyle}
+          sx={{
+            backgroundColor: 'white',
+            marginTop:'10px',
+            marginLeft:'5px',
+            width: '95%', 
+            height: '40px',
+            marginBottom:'10px'
+          }}
           value={selectedNames}
           onChange={handleNameChange}
           renderValue={selected => selected.join(', ')}
@@ -112,21 +143,35 @@ function GuildPointContestForm() {
         </Select>
       </FormControl>
       <br />
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <input type="file" accept="image/*"   ref={fileInputRef} style={{ display: 'none' }} onChange={handleImageChange} />
+      <button onClick={openFileInput} className='hotdog-button-sm' style={{ marginBottom: '10px' }}>Choose File</button>
       <br />
+      <hr></hr>
+      <div className='date-content-container' >
+        <span>Date: <span className='date-value'>{date}</span></span>
+        <span>Time: <span className='date-value'>{time}</span></span>
+      </div>
       {imageBase64 && (
-        <img
-          src={imageBase64}
-          alt="Selected Image"
-          style={{ maxWidth: '100px', maxHeight: '100px' }}
-        />
+          <div 
+            style={{
+            width: '100%', 
+            height: '136px',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center'
+          }}>
+             <div style={divStyle}>
+
+             </div>
+          </div>
       )}
       <br />
-      <Button type="submit" variant="contained" color="primary">
+      <button type="submit" variant="contained" className='hotdog-button-sm' style={{ marginBottom: '12px' }}>
         Submit
-      </Button>
+      </button>
       <Typography>{result}</Typography>
     </form>
+    </div>
   );
 }
 
