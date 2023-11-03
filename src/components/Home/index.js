@@ -20,6 +20,13 @@ function Home() {
      else if (location.pathname === '/guildexpedition') {
       return `${process.env.PUBLIC_URL}/assets/hotdog-16.jpg`;
     } 
+    else if (location.pathname === '/admin') {
+      return `${process.env.PUBLIC_URL}/assets/hotdog-17.jpg`;
+    } 
+    else if (location.pathname === '/pending') {
+      return `${process.env.PUBLIC_URL}/assets/hotdog-2.jpg`;
+    } 
+    
   };
   const backgroundStyle = {
     backgroundImage: `url(${getBackgroundImage()})`, // Use process.env.PUBLIC_URL

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -6,46 +6,46 @@ import {
   Select,
   MenuItem,
   Typography,
-} from '@mui/material';
-
+} from "@mui/material";
+import { Link } from "react-router-dom";
 function GuildExpeditionForm() {
   const [selectedNames, setSelectedNames] = useState([]);
-  const [imageBase64, setImageBase64] = useState('');
+  const [imageBase64, setImageBase64] = useState("");
   const [attendanceData, setAttendanceData] = useState([]);
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState("");
 
-  console.log('attendanceData', attendanceData);
+  console.log("attendanceData", attendanceData);
 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const date = currentDateTime.toLocaleDateString();
-  const timeOptions = { hour: '2-digit', minute: '2-digit' };
+  const timeOptions = { hour: "2-digit", minute: "2-digit" };
   const time = currentDateTime.toLocaleTimeString([], timeOptions);
 
   useEffect(() => {
     // Fetch the data from the server
-    fetch('http://13.228.193.236:3001/data') // Replace with your API endpoint
-      .then(response => response.json())
-      .then(data => {
+    fetch("http://13.228.193.236:3001/data") // Replace with your API endpoint
+      .then((response) => response.json())
+      .then((data) => {
         setAttendanceData(data);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
   }, []);
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     const selected = event.target.value;
     if (selected.length <= 1) {
       setSelectedNames(selected);
     }
   };
 
-  const handleImageChange = event => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
 
-      reader.onload = e => {
+      reader.onload = (e) => {
         const base64String = e.target.result;
         setImageBase64(base64String);
         setCurrentDateTime(new Date());
@@ -55,16 +55,16 @@ function GuildExpeditionForm() {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (selectedNames.length === 0) {
-      window.alert('Please select at least one name.');
+      window.alert("Please select at least one name.");
       return; // Exit the function early
     }
 
     if (!imageBase64) {
-      window.alert('Please provide an image.');
+      window.alert("Please provide an image.");
       return; // Exit the function early
     }
 
@@ -72,38 +72,38 @@ function GuildExpeditionForm() {
     const formData = {
       selectedNames,
       imageBase64,
-      type: 'GE',
+      type: "GE",
     };
 
     // Send a POST request to the server
-    fetch('http://13.228.193.236:3001/submit', {
-      method: 'POST',
+    fetch("http://13.228.193.236:3001/submit", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setSelectedNames([]);
         setImageBase64(null);
-        setResult('Thanks for attending!');
+        setResult("Thanks for attending!");
         console.log(data); // Server response
       })
-      .catch(error => {
-        setResult('Uh oh, something went wrong try again');
-        console.error('Error:', error);
+      .catch((error) => {
+        setResult("Uh oh, something went wrong try again");
+        console.error("Error:", error);
       });
   };
-  
+
   const divStyle = {
-    width: '95%',
-    border: '1px solid white',
-    height: '136px',
-    height: '136px',
+    width: "95%",
+    border: "1px solid white",
+    height: "136px",
+    height: "136px",
     backgroundImage: `url(${imageBase64})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   };
 
   const openFileInput = (event) => {
@@ -113,66 +113,89 @@ function GuildExpeditionForm() {
 
   const fileInputRef = React.createRef();
   return (
-    <div className='attendance-container'>
-    <span className='attendance-title'>Guild Expedition</span>
-    <form onSubmit={handleSubmit}  className='form-container'>
-      <FormControl fullWidth>
-        {!selectedNames.value && (
-        <InputLabel id="name-label">Select Name</InputLabel>
-        )}
-        <Select
-          labelId="name-label"
-          id="name"
-          multiple
-          // style={selectStyle}
-          sx={{
-            backgroundColor: 'white',
-            marginTop:'10px',
-            marginLeft:'5px',
-            width: '95%', 
-            height: '40px',
-            marginBottom:'10px'
-          }}
-          value={selectedNames}
-          onChange={handleNameChange}
-          renderValue={selected => selected.join(', ')}
+    <div className="attendance-container">
+      <Link to={"/"} style={{ textDecoration: "none" }}>
+        <button className="back-button ">←</button>
+      </Link>
+      <span className="attendance-title">Guild Expedition</span>
+      <form onSubmit={handleSubmit} className="form-container">
+        <FormControl fullWidth>
+          {!selectedNames.value && (
+            <InputLabel id="name-label">Select Name</InputLabel>
+          )}
+          <Select
+            labelId="name-label"
+            id="name"
+            multiple
+            // style={selectStyle}
+            sx={{
+              backgroundColor: "white",
+              marginTop: "10px",
+              marginLeft: "5px",
+              width: "95%",
+              height: "40px",
+              marginBottom: "10px",
+            }}
+            value={selectedNames}
+            onChange={handleNameChange}
+            renderValue={(selected) => selected.join(", ")}
+          >
+            {attendanceData.map((c) => (
+              <MenuItem key={c.Name} value={c.Name}>
+                {c.Name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <br />
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+        />
+        <button
+          onClick={openFileInput}
+          className="hotdog-button-sm"
+          style={{ marginBottom: "10px" }}
         >
-          {attendanceData.map(c => (
-            <MenuItem key={c.Name} value={c.Name}>
-              {c.Name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <br />
-      <input type="file" accept="image/*"   ref={fileInputRef} style={{ display: 'none' }} onChange={handleImageChange} />
-      <button onClick={openFileInput} className='hotdog-button-sm' style={{ marginBottom: '10px' }}>Choose File</button>
-      <br />
-      <hr></hr>
-      <div className='date-content-container' >
-        <span>Date: <span className='date-value'>{date}</span></span>
-        <span>Time: <span className='date-value'>{time}</span></span>
-      </div>
-      {imageBase64 && (
-          <div 
+          Choose File
+        </button>
+        <br />
+        <hr></hr>
+        <div className="date-content-container">
+          <span>
+            Date: <span className="date-value">{date}</span>
+          </span>
+          <span>
+            Time: <span className="date-value">{time}</span>
+          </span>
+        </div>
+        {imageBase64 && (
+          <div
             style={{
-            width: '100%', 
-            height: '136px',
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'center'
-          }}>
-             <div style={divStyle}>
-
-             </div>
+              width: "100%",
+              height: "136px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div style={divStyle}></div>
           </div>
-      )}
-      <br />
-      <button type="submit" variant="contained" className='hotdog-button-sm' style={{ marginBottom: '12px' }}>
-        Submit
-      </button>
-      <Typography>{result}</Typography>
-    </form>
+        )}
+        <br />
+        <button
+          type="submit"
+          variant="contained"
+          className="hotdog-button-sm"
+          style={{ marginBottom: "12px" }}
+        >
+          Submit
+        </button>
+        <Typography>{result}</Typography>
+      </form>
     </div>
   );
 }
