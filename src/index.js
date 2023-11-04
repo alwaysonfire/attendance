@@ -10,6 +10,7 @@ import AdminLogin from './components/AdminLogin';
 import PendingAttendance from './components/PendingAttendance';
 import { AuthProvider } from './context/AuthContext';
 import AdminOptionsPage from './components/AdminOptions';
+import GuildAttendance from './components/GuildAttendance';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: 'admin-options',
         element: <AdminOptionsPage />,
+      },
+      {
+        path: 'guild-attendance',
+        element: <GuildAttendance />,
       },
     ],
   },

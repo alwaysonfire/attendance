@@ -81,6 +81,7 @@ function Sidebar() {
                 Guild Expedition
               </Button>
             </Link>
+
             <Link to="/pending" style={{ textDecoration: 'none' }}>
               <Button
                 variant="contained"
