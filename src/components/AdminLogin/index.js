@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function AdminLogin() {
   const { login } = useAuth();
@@ -13,7 +13,7 @@ function AdminLogin() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://13.228.193.236:3001/login', {
+      const response = await fetch(process.env.REACT_APP_API_URL + 'login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,32 +38,36 @@ function AdminLogin() {
 
   return (
     <Paper className="admin-login-container">
-      <Container  >
-      <Link to={'/'} style={{ textDecoration: "none" }}>
-        <button className="back-button ">
-          ←
-        </button>
-      </Link>
+      <Container>
+        <Link to={'/'} style={{ textDecoration: 'none' }}>
+          <button className="back-button ">←</button>
+        </Link>
         {/* <Typography mt={10} mb={10} variant="h5">
           Admin Login
         </Typography> */}
-        <div className='admin-login-label'><span>Admin Login</span></div>
+        <div className="admin-login-label">
+          <span>Admin Login</span>
+        </div>
         <TextField
           label="Username"
           value={username}
-          className='admin-input-style-1'
+          className="admin-input-style-1"
           onChange={e => setUsername(e.target.value)}
           fullWidth
         />
         <TextField
           label="Password"
           type="password"
-          className='admin-input-style'
+          className="admin-input-style"
           value={password}
           onChange={e => setPassword(e.target.value)}
           fullWidth
         />
-        <button variant="contained" onClick={handleLogin} className='hotdog-button-sm'>
+        <button
+          variant="contained"
+          onClick={handleLogin}
+          className="hotdog-button-sm"
+        >
           Login
         </button>
         <Typography>{loginMessage}</Typography>
